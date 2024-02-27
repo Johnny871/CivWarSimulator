@@ -10,25 +10,7 @@ namespace CivWar{
 
         public void Initialize(int resourceAmount)
         {
-            if(model == null)
-            {
-                model = new WoodModel(resourceAmount);
-            }
-        }
-
-        public void GiveResource()
-        {
-            
-        }
-
-        public void SetIsWorked(bool duaringWorked)
-        {
-            this.duaringWorked = duaringWorked;
-        }
-
-        private void BecomeEmpty()
-        {
-            Destroy(this.gameObject);
+            this.resourceAmount = resourceAmount;
         }
     }
 }

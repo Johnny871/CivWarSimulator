@@ -5,46 +5,48 @@ using CivWar.Const;
 using UnityEngine.AI;
 using CivWar;
 
-public class ProduceUnit : MonoBehaviour
-{
-    private ProduceUnitModel model;
-    private NavMeshAgent agent;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float searchDistance;
-    private GameObject targetObj;
-    public void Initialize(TeamColor team, Transform townHall)
+namespace CivWar{
+    public class ProduceUnit : MonoBehaviour
     {
-        if(model == null)
+        private ProduceUnitModel model;
+        private NavMeshAgent agent;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private float searchDistance;
+        private GameObject targetObj;
+        public void Initialize(TeamColor team, Transform townHall)
         {
-            model = new ProduceUnitModel(moveSpeed, townHall);
+            if(model == null)
+            {
+                model = new ProduceUnitModel(moveSpeed, townHall);
+            }
         }
-    }
 
-    private void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
-
-    private Transform SearchNearResource()
-    {
-        Transform result = null;
-        var targets = GameObject.FindGameObjectsWithTag("Resource");
-        if(targets.Length == 1) return targets[0].transform;
-        var minTargetDistance = searchDistance;
-        foreach(var target in targets)
+        private void Awake()
         {
-            Resource resource = target.GetComponent<Resource>();
-            if (resource.duaringWorked) continue;
-            var targetDistance = Vector3.Distance(transform.position, target.transform.position);
-            if (!(targetDistance < minTargetDistance)) continue;
-            minTargetDistance = targetDistance;
-            result = target.transform;
+            agent = GetComponent<NavMeshAgent>();
         }
-        return result?.transform;
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        
-    }    
+        private Transform SearchNearResource()
+        {
+            Transform result = null;
+            var targets = GameObject.FindGameObjectsWithTag("Resource");
+            if(targets.Length == 1) return targets[0].transform;
+            var minTargetDistance = searchDistance;
+            foreach(var target in targets)
+            {
+                Resource resource = target.GetComponent<Resource>();
+                if (resource.DuaringWorked) continue;
+                var targetDistance = Vector3.Distance(transform.position, target.transform.position);
+                if (!(targetDistance < minTargetDistance)) continue;
+                minTargetDistance = targetDistance;
+                result = target.transform;
+            }
+            return result?.transform;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            
+        }    
+    }
 }
