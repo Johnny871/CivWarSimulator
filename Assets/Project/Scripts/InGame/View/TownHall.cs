@@ -4,58 +4,68 @@ using UnityEngine;
 using CivWar.Const;
 
 namespace CivWar{
+    [RequireComponent(typeof(Warehouse))]
     public class TownHall : MonoBehaviour
     {
         [SerializeField] private GameObject
         produceUnitPref,
         soldierUnitPref;
         [SerializeField] private Transform spawnPoint;
-        private TownHallModel model;
+        private TeamColor teamColor;
+        private TownStorage townStorage = new TownStorage(0, 0);
+        public TownStorage p_TownStorage => townStorage;
+        private ProduceUnitCommonStates produceUnitCommonStates = new ProduceUnitCommonStates();
+        public ProduceUnitCommonStates p_produceUnitCommonStates => produceUnitCommonStates;
+        [SerializeField] private int carryingResourceCapacity;
+        [SerializeField] private int onceExtractionCapacity;
+        [SerializeField] private float gatheringInterval;
+        [SerializeField] private int InitProduceUnitSpawnCount;
+
         public void Initialize(TeamColor team)
         {
-            if(model == null)
-            {
-                model = new TownHallModel(team);
-            }
-            var color = GetColor(model.Team);
+            this.teamColor = team;
+            var color = ConstFormatter.GetColor(team);
             if(color != Color.white)
             {
                 var render = GetComponent<Renderer>();
                 render.material.color = color;
             }
+            GetComponent<Warehouse>().Initialize(this, team);
+            
+            InstantiateUnit(UnitType.Producer, InitProduceUnitSpawnCount);
         }
 
-        private Color GetColor(TeamColor team)
-        {        
-            switch(team)
-            {
-                case TeamColor.Red:
-                    return Color.red;
-                    break;
-                case TeamColor.Blue:
-                    return Color.blue;
-                    break;
-                case TeamColor.Yellow:
-                    return Color.yellow;
-                    break;
-                case TeamColor.Green:
-                    return Color.green;
-                    break;
-            }
-            return Color.white;
-        }
-
-        public void InstantiateUnit(UnitType type)
+        private void Awake()
         {
-            switch(type)
+            produceUnitCommonStates = new ProduceUnitCommonStates(carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
+        }
+
+        public void InstantiateUnit(UnitType type, int unitCount)
+        {
+            if(unitCount <= 0) return;
+            while(unitCount > 0)
             {
-                case UnitType.Producer:
-                    var unit = Instantiate(produceUnitPref, spawnPoint);
-                    unit.GetComponent<ProduceUnit>().Initialize(model.Team, this.transform);
-                    break;
-                case UnitType.Soldier:
-                    break;
+                switch(type)
+                {
+                    case UnitType.Producer:
+                        var unit = Instantiate(produceUnitPref, spawnPoint.position, Quaternion.identity);
+                        unit.GetComponent<ProduceUnit>().Initialize(this, teamColor);
+                        break;
+                    case UnitType.Soldier:
+                        break;
+                }
+                unitCount--;
             }
+        }
+
+        public void AddResource(ResourceType resourceType, int resourceAmount)
+        {
+            townStorage.AddResource(resourceType, resourceAmount);
+        }
+
+        public void RemoveResource(ResourceType resourceType, int resourceAmount)
+        {
+            townStorage.RemoveResource(resourceType, resourceAmount);
         }
     }
 }

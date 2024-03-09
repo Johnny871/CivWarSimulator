@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CivWar.Const;
+using DG.Tweening;
 
 namespace CivWar{
     public abstract class Resource : MonoBehaviour
     {
+        protected ResourceType resourceType;
+        public ResourceType ResourceType => resourceType;
         protected int resourceAmount;
         public int ResourceAmount => resourceAmount;
         protected int maxAmount;
         protected bool duaringWorked = false;
         public bool DuaringWorked => duaringWorked;
 
-        protected void SetIsWorked(bool duaringWorked)
+        public virtual void Initialize(int resourceAmount, int maxAmount, ResourceType resourceType)
+        {
+            this.resourceAmount = resourceAmount;
+            this.maxAmount = maxAmount;
+            this.resourceType = resourceType;
+        }
+        
+        public void SetIsWorked(bool duaringWorked)
         {
             this.duaringWorked = duaringWorked;
         }
 
-        protected void BecomeEmpty()
+        private void BecomeEmpty()
         {
             Destroy(this.gameObject);
         }
@@ -32,6 +43,8 @@ namespace CivWar{
         {
             if (resourceAmount < requireAmount) return false;
             resourceAmount -= requireAmount;
+            if(resourceAmount <= 0) BecomeEmpty();
+            this.transform.DOScale(new Vector3(0.7f, 0.7f, 0.7f), 0.07f).SetLoops(2, LoopType.Yoyo);
             return true;
         }
     }
