@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using CivWar;
+using CivWar.Const;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CivWar{
     public class Wood : Resource
     {
-        private WoodModel model;
+        [SerializeField] private int 
+        _resourceAmount,
+        _maxAmount;
+        [SerializeField] private ResourceType _resourceType;
 
-        public void Initialize(int resourceAmount)
+        private void Awake()
         {
-            this.resourceAmount = resourceAmount;
+            base.Initialize(_resourceAmount, _maxAmount, _resourceType);
         }
     }
 }

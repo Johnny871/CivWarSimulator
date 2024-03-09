@@ -54,4 +54,5 @@
     },
     "dotnet.preferCSharpExtension": true,
     "omnisharp.useModernNet": false,
+    "dotnet.defaultSolution": "CivWarSimulator.sln",
 }
