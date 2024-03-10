@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5914ba4bc25520240a72e95485228b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  initHealthPoint: 10
   searchDistance: 300
 --- !u!195 &7233291056467167409
 NavMeshAgent:

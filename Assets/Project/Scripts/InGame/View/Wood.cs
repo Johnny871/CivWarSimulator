@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using CivWar.Const;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CivWar{

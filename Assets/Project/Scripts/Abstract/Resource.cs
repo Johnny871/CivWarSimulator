@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CivWar.Const;
 using DG.Tweening;
@@ -8,7 +6,7 @@ namespace CivWar{
     public abstract class Resource : MonoBehaviour
     {
         protected ResourceType resourceType;
-        public ResourceType ResourceType => resourceType;
+        public ResourceType p_ResourceType => resourceType;
         protected int resourceAmount;
         public int ResourceAmount => resourceAmount;
         protected int maxAmount;

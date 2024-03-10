@@ -19,20 +19,21 @@ namespace CivWar{
         [SerializeField] private int carryingResourceCapacity;
         [SerializeField] private int onceExtractionCapacity;
         [SerializeField] private float gatheringInterval;
-        [SerializeField] private int InitProduceUnitSpawnCount;
+        [SerializeField] private int initProduceUnitSpawnCount;
 
         public void Initialize(TeamColor team)
         {
+            Debug.LogFormat("{0}チームのタウンホール初期化", team);
             this.teamColor = team;
             var color = ConstFormatter.GetColor(team);
             if(color != Color.white)
             {
-                var render = GetComponent<Renderer>();
+                var render = GetComponentInChildren<Renderer>();
                 render.material.color = color;
             }
             GetComponent<Warehouse>().Initialize(this, team);
             
-            InstantiateUnit(UnitType.Producer, InitProduceUnitSpawnCount);
+            InstantiateUnit(UnitType.Producer, initProduceUnitSpawnCount);
         }
 
         private void Awake()
@@ -42,6 +43,7 @@ namespace CivWar{
 
         public void InstantiateUnit(UnitType type, int unitCount)
         {
+            Debug.LogFormat("{0}体の生産ユニットを生成開始", unitCount);
             if(unitCount <= 0) return;
             while(unitCount > 0)
             {
@@ -56,6 +58,7 @@ namespace CivWar{
                 }
                 unitCount--;
             }
+            Debug.Log("生産ユニットを生成完了");
         }
 
         public void AddResource(ResourceType resourceType, int resourceAmount)
