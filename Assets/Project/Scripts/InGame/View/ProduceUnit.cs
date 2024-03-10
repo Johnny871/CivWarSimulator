@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using CivWar.Const;
 using UnityEngine.AI;
-using CivWar;
 using UniRx;
-using System;
-using Mono.Cecil.Cil;
-using Random = UnityEngine.Random;
 
 namespace CivWar{
-    public class ProduceUnit : MonoBehaviour
+    public class ProduceUnit : Unit
     {
         private NavMeshAgent agent;
         private ReactiveProperty<ProduceUnitState> state = new ReactiveProperty<ProduceUnitState>(ProduceUnitState.DoNothing);
-        [SerializeField] private float moveSpeed;
+        [SerializeField] private int initHealthPoint;
         [SerializeField] private float searchDistance;
         private GameObject targetObj;
         private Resource targetResource;
@@ -26,6 +22,7 @@ namespace CivWar{
 
         public void Initialize(TownHall townHall, TeamColor teamColor)
         {
+            base.Initialize(UnitType.Producer, initHealthPoint);
             this.townHall = townHall;
             this.teamColor = teamColor;
             var color = ConstFormatter.GetColor(teamColor);
@@ -34,10 +31,6 @@ namespace CivWar{
                 var render = GetComponent<Renderer>();
                 render.material.color = color;
             }
-        }
-
-        private void Awake()
-        {
             agent = GetComponent<NavMeshAgent>();
             state
             .Subscribe(state =>
@@ -93,7 +86,7 @@ namespace CivWar{
             {
                 Resource resource = target.GetComponent<Resource>();
                 if(resource.DuaringWorked) continue;
-                if(targetResourceType != ResourceType.None && resource.ResourceType != targetResourceType) continue;
+                if(targetResourceType != ResourceType.None && resource.p_ResourceType != targetResourceType) continue;
                 var targetDistance = Vector3.Distance(transform.position, target.transform.position);
                 if(!(targetDistance < minTargetDistance)) continue;
                 minTargetDistance = targetDistance;
@@ -138,7 +131,7 @@ namespace CivWar{
                 if(requireAmount > targetResource.ResourceAmount) requireAmount = targetResource.ResourceAmount;
                 targetResource.Remove(requireAmount);
                 currentCarryingResourceAmount += requireAmount;
-                currentCarryingResourceType = targetResource.ResourceType;
+                currentCarryingResourceType = targetResource.p_ResourceType;
             }
             state.Value = ProduceUnitState.Carrying;
         }
@@ -155,6 +148,15 @@ namespace CivWar{
         {
             yield return new WaitForSeconds(Random.Range(minSec, maxSec));
             state.Value = ProduceUnitState.Searching;
+        }
+
+        public override void Destroy()
+        {
+            if(state.Value == ProduceUnitState.Gathering || state.Value == ProduceUnitState.Searching)
+            {
+                targetResource.SetIsWorked(false);
+            }
+            Destroy(this.gameObject);
         }
 
         //接触判定

@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CivWar.Const;
-using Unity.Entities.UniversalDelegates;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,8 +23,9 @@ namespace CivWar{
         private void Awake()
         {
             InstantiateTownHalls();
+            Debug.LogFormat("生成に成功したタウンホールの数 : {0}", objectPositionList.Count);
             InstantiateResourceObjects();
-            Debug.LogFormat("生成に成功したオブジェクトの数 : {0}個", objectPositionList.Count);
+            Debug.LogFormat("生成に成功したオブジェクトの数 : {0}個", objectPositionList.Count - townHallCount);
         }
 
         private void InstantiateResourceObjects()

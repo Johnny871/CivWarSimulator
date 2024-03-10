@@ -1,13 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using CivWar;
 using TMPro;
 using UniRx;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CivWar{
     public class TownStorageView : MonoBehaviour
