@@ -12,7 +12,7 @@ namespace CivWar.Const{
 
     public enum ResourceType
     {
-        None,
+        None = -1,
         Wood,
         Stone,
         Wheat
@@ -44,13 +44,6 @@ namespace CivWar.Const{
         BitWarlike,
         HighlyWarlike,
         SuperWarlike
-    }
-
-    [System.Serializable]
-    public struct ResourcePacket
-    {
-        public ResourceType resourceType;
-        public int resourceAmount;
     }
 
     public class ConstFormatter

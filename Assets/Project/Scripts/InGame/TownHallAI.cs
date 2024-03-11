@@ -50,6 +50,10 @@ namespace CivWar{
         private IEnumerator CheckResourceAmount()
         {
             yield return new WaitForSeconds(Random.Range(1, 2));
+            foreach(ResourcePacket resourcePacket in townHall.p_produceUnitCommonStates.p_ResourceRequestForSpawn)
+            {
+                //var canSpawnProduceUnit = resourcePacket.IsEnoughResource();
+            }
         }
     }
 }

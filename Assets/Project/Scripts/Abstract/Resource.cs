@@ -1,23 +1,24 @@
 using UnityEngine;
 using CivWar.Const;
 using DG.Tweening;
+using UniRx;
 
 namespace CivWar{
     public abstract class Resource : MonoBehaviour
     {
-        protected ResourceType resourceType;
-        public ResourceType p_ResourceType => resourceType;
-        protected int resourceAmount;
-        public int ResourceAmount => resourceAmount;
-        protected int maxAmount;
+        protected ResourcePacket resourcePacket;
+        public ResourcePacket p_ResourcePacket => resourcePacket;
         protected bool duaringWorked = false;
         public bool DuaringWorked => duaringWorked;
 
-        public virtual void Initialize(int resourceAmount, int maxAmount, ResourceType resourceType)
+        public virtual void Initialize(ResourcePacket resourcePacket)
         {
-            this.resourceAmount = resourceAmount;
-            this.maxAmount = maxAmount;
-            this.resourceType = resourceType;
+            this.resourcePacket = resourcePacket;
+            resourcePacket.Amount.Subscribe(resourceAmount =>
+            {
+                if(resourceAmount <= 0) BecomeEmpty();
+            })
+            .AddTo(this);
         }
         
         public void SetIsWorked(bool duaringWorked)
@@ -32,16 +33,14 @@ namespace CivWar{
 
         public bool Add(int requireAmount)
         {
-            if(resourceAmount + requireAmount > maxAmount) return false;
-            resourceAmount += requireAmount;
+            resourcePacket.Add(new ResourcePacket(this.resourcePacket.Type, requireAmount));
             return true;
         }
 
         public bool Remove(int requireAmount)
         {
-            if (resourceAmount < requireAmount) return false;
-            resourceAmount -= requireAmount;
-            if(resourceAmount <= 0) BecomeEmpty();
+            if (resourcePacket.Amount.Value < requireAmount) return false;
+            resourcePacket.Remove(new ResourcePacket(this.resourcePacket.Type, requireAmount));
             this.transform.DOScale(new Vector3(0.7f, 0.7f, 0.7f), 0.07f).SetLoops(2, LoopType.Yoyo);
             return true;
         }
