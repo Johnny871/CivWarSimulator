@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CivWar.Const{
 
@@ -33,6 +35,24 @@ namespace CivWar.Const{
         Carrying
     }
 
+    public enum StrategyBalance
+    {
+        SuperEconomy,
+        HighlyEconomy,
+        BitEconomy,
+        Balance,
+        BitWarlike,
+        HighlyWarlike,
+        SuperWarlike
+    }
+
+    [System.Serializable]
+    public struct ResourcePacket
+    {
+        public ResourceType resourceType;
+        public int resourceAmount;
+    }
+
     public class ConstFormatter
     {
         public static Color GetColor(TeamColor teamColor)
@@ -54,6 +74,25 @@ namespace CivWar.Const{
                     break;
             }
             return result;
+        }
+    }
+
+    public class EnumUtility
+    {
+        public static int GetTypeNum<T>() where T : struct
+        {
+            return Enum.GetValues(typeof(T)).Length;
+        }
+
+        public static T GetRandom<T>() where T : struct
+        {
+            int num = Random.Range(0, GetTypeNum<T>());
+            return NoToType<T>(num);
+        }
+
+        public static T NoToType<T>(int targetNum) where T : struct
+        {
+            return (T)Enum.ToObject(typeof(T), targetNum);
         }
     }
 }

@@ -4,12 +4,15 @@ using UnityEngine;
 using CivWar.Const;
 
 namespace CivWar{
-    [RequireComponent(typeof(Warehouse))]
+    [RequireComponent(typeof(Warehouse), typeof(TownHallAI))]
     public class TownHall : MonoBehaviour
     {
         [SerializeField] private GameObject
         produceUnitPref,
         soldierUnitPref;
+        [SerializeField] private List<ResourcePacket>
+        resourceRequestForProduceUnitSpawn,
+        resourceRequestForSoldierUnitSpawn;
         [SerializeField] private Transform spawnPoint;
         private TeamColor teamColor;
         private TownStorage townStorage = new TownStorage(0, 0);
@@ -32,18 +35,18 @@ namespace CivWar{
                 render.material.color = color;
             }
             GetComponent<Warehouse>().Initialize(this, team);
+            GetComponent<TownHallAI>().Initialize(this);
             
             InstantiateUnit(UnitType.Producer, initProduceUnitSpawnCount);
         }
 
         private void Awake()
         {
-            produceUnitCommonStates = new ProduceUnitCommonStates(carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
+            produceUnitCommonStates = new ProduceUnitCommonStates(resourceRequestForProduceUnitSpawn, carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
         }
 
         public void InstantiateUnit(UnitType type, int unitCount)
         {
-            Debug.LogFormat("{0}体の生産ユニットを生成開始", unitCount);
             if(unitCount <= 0) return;
             while(unitCount > 0)
             {
@@ -58,7 +61,6 @@ namespace CivWar{
                 }
                 unitCount--;
             }
-            Debug.Log("生産ユニットを生成完了");
         }
 
         public void AddResource(ResourceType resourceType, int resourceAmount)

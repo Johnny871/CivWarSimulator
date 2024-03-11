@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using CivWar.Const;
+
 namespace CivWar{
     public struct ProduceUnitCommonStates
     {
+        private List<ResourcePacket> resourceRequestForSpawn;
         private int carryingResourceCapacity;
         private int onceExtractionCapacity;
         private float gatheringInterval;
@@ -9,8 +13,9 @@ namespace CivWar{
         public int OnceExtractionCapacity => onceExtractionCapacity;
         public float GatheringInterval => gatheringInterval;
 
-        public ProduceUnitCommonStates(int carryingResourceCapacity, int onceExtractionCapacity, float gatheringInterval)
+        public ProduceUnitCommonStates(List<ResourcePacket> resourceRequestForSpawn, int carryingResourceCapacity, int onceExtractionCapacity, float gatheringInterval)
         {
+            this.resourceRequestForSpawn = resourceRequestForSpawn;
             this.carryingResourceCapacity = carryingResourceCapacity;
             this.onceExtractionCapacity = onceExtractionCapacity;
             this.gatheringInterval = gatheringInterval;

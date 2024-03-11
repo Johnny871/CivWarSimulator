@@ -14,8 +14,7 @@ namespace CivWar{
         [SerializeField] private float searchDistance;
         private GameObject targetObj;
         private Resource targetResource;
-        private ResourceType currentCarryingResourceType = new ResourceType();
-        private int currentCarryingResourceAmount;
+        private ResourcePacket currentResourcePacket = new ResourcePacket();
         private TownHall townHall;
         private TeamColor teamColor;
         private bool isMove = false;
@@ -122,7 +121,7 @@ namespace CivWar{
             //ターゲットが存在している間繰り返す
             while
             (
-                currentCarryingResourceAmount < townHall.p_produceUnitCommonStates.CarryingResourceCapacity &&
+                currentResourcePacket.resourceAmount < townHall.p_produceUnitCommonStates.CarryingResourceCapacity &&
                 targetResource.ResourceAmount > 0 &&
                 targetObj != null
             )
@@ -130,8 +129,8 @@ namespace CivWar{
                 yield return new WaitForSeconds(townHall.p_produceUnitCommonStates.GatheringInterval);
                 if(requireAmount > targetResource.ResourceAmount) requireAmount = targetResource.ResourceAmount;
                 targetResource.Remove(requireAmount);
-                currentCarryingResourceAmount += requireAmount;
-                currentCarryingResourceType = targetResource.p_ResourceType;
+                currentResourcePacket.resourceAmount += requireAmount;
+                currentResourcePacket.resourceType = targetResource.p_ResourceType;
             }
             state.Value = ProduceUnitState.Carrying;
         }
@@ -139,9 +138,8 @@ namespace CivWar{
         //所持資源収納関数[void型]
         private void StorageResource(Warehouse warehouse)
         {
-            warehouse.AddResource(currentCarryingResourceType, currentCarryingResourceAmount);
-            currentCarryingResourceAmount = 0;
-            currentCarryingResourceType = ResourceType.None;
+            warehouse.AddResource(currentResourcePacket.resourceType, currentResourcePacket.resourceAmount);
+            currentResourcePacket = new ResourcePacket();
         }
 
         private IEnumerator WaitRandomSecond(float minSec, float maxSec)
