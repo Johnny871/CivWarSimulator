@@ -1149,7 +1149,7 @@ MonoBehaviour:
   surroundTownHallDistance: 20
   townHallDistance: 130
   townHallPref: {fileID: 2523248961994633873, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-  townHallCount: 1
+  townHallCount: 4
 --- !u!4 &1852280836
 Transform:
   m_ObjectHideFlags: 0

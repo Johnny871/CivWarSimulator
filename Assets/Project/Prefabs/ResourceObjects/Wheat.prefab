@@ -1139,9 +1139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26410de86ddbf0e44a0679b942ad8812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceAmount: 30
-  _maxAmount: 1000
-  _resourceType: 3
+  initResourcePacket:
+    type: 2
+    amount:
+      value: 30
 --- !u!208 &1272529449821084708
 NavMeshObstacle:
   m_ObjectHideFlags: 0

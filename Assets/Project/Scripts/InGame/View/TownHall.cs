@@ -31,12 +31,10 @@ namespace CivWar{
             this.teamColor = team;
             //マイナス2はNone(-1)の分と配列の1要素目のIndexのゼロ分
             var resourceTypeCount = EnumUtility.GetTypeNum<ResourceType>() -2 ;
-            Debug.Log(resourceTypeCount);
             var resourcePackets = new List<ResourcePacket>();
             while(resourceTypeCount >= 0)
             {
                 var resourceType = EnumUtility.NoToType<ResourceType>(resourceTypeCount);
-                Debug.Log(resourceType);
                 resourcePackets.Add(new ResourcePacket(resourceType));
                 resourceTypeCount--;
             }
