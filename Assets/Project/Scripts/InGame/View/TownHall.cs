@@ -11,19 +11,14 @@ namespace CivWar{
         [SerializeField] private GameObject
         produceUnitPref,
         soldierUnitPref;
-        [SerializeField] private List<ResourcePacket>
-        resourceRequestForProduceUnitSpawn,
-        resourceRequestForSoldierUnitSpawn;
         [SerializeField] private Transform spawnPoint;
         private TeamColor teamColor;
         private TownStorage townStorage;
         public TownStorage p_TownStorage => townStorage;
         private ProduceUnitCommonStates produceUnitCommonStates = new ProduceUnitCommonStates();
         public ProduceUnitCommonStates p_produceUnitCommonStates => produceUnitCommonStates;
-        [SerializeField] private int carryingResourceCapacity;
-        [SerializeField] private int onceExtractionCapacity;
-        [SerializeField] private float gatheringInterval;
         [SerializeField] private int initProduceUnitSpawnCount;
+        [SerializeField] private ProduceUnitCommonStates initProduceUnitCommonStates;
 
         public void Initialize(TeamColor team)
         {
@@ -39,21 +34,20 @@ namespace CivWar{
                 resourceTypeCount--;
             }
             this.townStorage = new TownStorage(resourcePackets);
+
             var color = ConstFormatter.GetColor(team);
             if(color != Color.white)
             {
                 var render = GetComponentInChildren<Renderer>();
                 render.material.color = color;
             }
+
+            produceUnitCommonStates = initProduceUnitCommonStates;
+
             GetComponent<Warehouse>().Initialize(this, team);
             GetComponent<TownHallAI>().Initialize(this);
             
             InstantiateUnit(UnitType.Producer, initProduceUnitSpawnCount);
-        }
-
-        private void Awake()
-        {
-            produceUnitCommonStates = new ProduceUnitCommonStates(resourceRequestForProduceUnitSpawn, carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
         }
 
         public void InstantiateUnit(UnitType type, int unitCount)

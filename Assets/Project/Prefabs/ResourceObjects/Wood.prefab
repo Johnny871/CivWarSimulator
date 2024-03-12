@@ -51,7 +51,7 @@ MonoBehaviour:
   initResourcePacket:
     type: 0
     amount:
-      value: 30
+      value: 10
 --- !u!208 &1043613064727913188
 NavMeshObstacle:
   m_ObjectHideFlags: 0

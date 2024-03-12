@@ -9,8 +9,7 @@ namespace CivWar{
         private TownHall townHall;
 
         [SerializeField] private StrategyBalance strategyBalance = new StrategyBalance();
-        private float economyRatio;
-        private float EconomyRatio 
+        private float economyRatio 
         {
             get
             {
@@ -24,26 +23,26 @@ namespace CivWar{
                         return 60;
                     case StrategyBalance.Balance:
                         return 50;
-                    case StrategyBalance.BitWarlike:
+                    case StrategyBalance.BitWarfare:
                         return 40;
-                    case StrategyBalance.HighlyWarlike:
+                    case StrategyBalance.HighlyWarfare:
                         return 30;
-                    case StrategyBalance.SuperWarlike:
+                    case StrategyBalance.SuperWarfare:
                         return 20;
                 }
                 return 0;
             }
-            set
-            {
-                EconomyRatio = value;
-            }
+        }
+        private float warfareRatio
+        {
+            get { return 100 - economyRatio; }
         }
 
         public void Initialize(TownHall townHall)
         {
             this.townHall = townHall;
             strategyBalance = EnumUtility.GetRandom<StrategyBalance>();
-            Debug.LogFormat("戦略タイプ : {0} / 内政↔戦争 : {1}%↔{2}%", strategyBalance, EconomyRatio, 100 - EconomyRatio);
+            Debug.LogFormat("戦略タイプ : {0} / 内政↔戦争 : {1}%↔{2}%", strategyBalance, economyRatio, warfareRatio);
             StartCoroutine(CheckResourceAmount());
         }
 
