@@ -41,9 +41,9 @@ namespace CivWar.Const{
         HighlyEconomy,
         BitEconomy,
         Balance,
-        BitWarlike,
-        HighlyWarlike,
-        SuperWarlike
+        BitWarfare,
+        HighlyWarfare,
+        SuperWarfare
     }
 
     public class ConstFormatter

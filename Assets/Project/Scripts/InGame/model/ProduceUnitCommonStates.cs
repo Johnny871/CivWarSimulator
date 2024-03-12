@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CivWar{
+    [System.Serializable]
     public struct ProduceUnitCommonStates
     {
-        private List<ResourcePacket> resourceRequestForSpawn;
-        private int carryingResourceCapacity;
-        private int onceExtractionCapacity;
-        private float gatheringInterval;
+        [SerializeField] private List<ResourcePacket> resourceRequestForSpawn;
+        [SerializeField] private int carryingResourceCapacity;
+        [SerializeField] private int onceExtractionCapacity;
+        [SerializeField] private float gatheringInterval;
 
         public List<ResourcePacket> p_ResourceRequestForSpawn => resourceRequestForSpawn;
         public int p_CarryingResourceCapacity => carryingResourceCapacity;

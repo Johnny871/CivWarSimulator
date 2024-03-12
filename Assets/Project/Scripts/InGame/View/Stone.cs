@@ -1,7 +1,6 @@
 using UnityEngine;
 
 namespace CivWar{
-    [System.Serializable]
     public class Stone : Resource
     {
         [SerializeField] private ResourcePacket initResourcePacket;
