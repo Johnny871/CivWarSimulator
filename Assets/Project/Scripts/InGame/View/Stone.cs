@@ -1,17 +1,14 @@
-using CivWar.Const;
 using UnityEngine;
 
 namespace CivWar{
+    [System.Serializable]
     public class Stone : Resource
     {
-        [SerializeField] private int 
-        _resourceAmount,
-        _maxAmount;
-        [SerializeField] private ResourceType _resourceType;
+        [SerializeField] private ResourcePacket initResourcePacket;
 
         private void Awake()
         {
-            base.Initialize(_resourceAmount, _maxAmount, _resourceType);
+            base.Initialize(initResourcePacket);
         }
     }
 }

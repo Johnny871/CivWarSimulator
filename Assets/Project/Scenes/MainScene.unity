@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &66003262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373d269ca70b5974d9479b53813ed5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  townHall: {fileID: 756252707}
+  townHall: {fileID: 0}
   woodAmountText: {fileID: 713600484}
   stoneAmountText: {fileID: 1222178839}
   wheatAmountText: {fileID: 917980248}
@@ -436,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &593675596
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -751,17 +751,6 @@ RectTransform:
   m_AnchoredPosition: {x: 135, y: -56}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &756252707 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 670446775422470658, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-  m_PrefabInstance: {fileID: 5253167565094580476}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0f08a2373f4a954c9b116b853cde798, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &917980247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,9 +1146,10 @@ MonoBehaviour:
   - {fileID: 8405569208497757362, guid: 0241b4cbf082fae44affe995f954e9c1, type: 3}
   spawnCount: 1000
   resourceDistance: 1.5
+  surroundTownHallDistance: 20
   townHallDistance: 130
-  townHallPref: {fileID: 8248571404625255526, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-  townHallCount: 4
+  townHallPref: {fileID: 2523248961994633873, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
+  townHallCount: 1
 --- !u!4 &1852280836
 Transform:
   m_ObjectHideFlags: 0
@@ -1175,67 +1165,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5253167565094580476
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3293671038180850177, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8248571404625255526, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_Name
-      value: TownHall
-      objectReference: {fileID: 0}
-    - target: {fileID: 8248571404625255526, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2fcb335c3907f1b41b17c9f123a2fabb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1243,7 +1172,6 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 531776332}
-  - {fileID: 5253167565094580476}
   - {fileID: 66003266}
   - {fileID: 89301538}
   - {fileID: 1852280836}

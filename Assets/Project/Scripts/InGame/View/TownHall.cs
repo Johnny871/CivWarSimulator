@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CivWar.Const;
+using System;
 
 namespace CivWar{
-    [RequireComponent(typeof(Warehouse))]
+    [RequireComponent(typeof(Warehouse), typeof(TownHallAI))]
     public class TownHall : MonoBehaviour
     {
         [SerializeField] private GameObject
         produceUnitPref,
         soldierUnitPref;
+        [SerializeField] private List<ResourcePacket>
+        resourceRequestForProduceUnitSpawn,
+        resourceRequestForSoldierUnitSpawn;
         [SerializeField] private Transform spawnPoint;
         private TeamColor teamColor;
-        private TownStorage townStorage = new TownStorage(0, 0);
+        private TownStorage townStorage;
         public TownStorage p_TownStorage => townStorage;
         private ProduceUnitCommonStates produceUnitCommonStates = new ProduceUnitCommonStates();
         public ProduceUnitCommonStates p_produceUnitCommonStates => produceUnitCommonStates;
@@ -25,6 +29,18 @@ namespace CivWar{
         {
             Debug.LogFormat("{0}チームのタウンホール初期化", team);
             this.teamColor = team;
+            //マイナス2はNone(-1)の分と配列の1要素目のIndexのゼロ分
+            var resourceTypeCount = EnumUtility.GetTypeNum<ResourceType>() -2 ;
+            Debug.Log(resourceTypeCount);
+            var resourcePackets = new List<ResourcePacket>();
+            while(resourceTypeCount >= 0)
+            {
+                var resourceType = EnumUtility.NoToType<ResourceType>(resourceTypeCount);
+                Debug.Log(resourceType);
+                resourcePackets.Add(new ResourcePacket(resourceType));
+                resourceTypeCount--;
+            }
+            this.townStorage = new TownStorage(resourcePackets);
             var color = ConstFormatter.GetColor(team);
             if(color != Color.white)
             {
@@ -32,18 +48,18 @@ namespace CivWar{
                 render.material.color = color;
             }
             GetComponent<Warehouse>().Initialize(this, team);
+            GetComponent<TownHallAI>().Initialize(this);
             
             InstantiateUnit(UnitType.Producer, initProduceUnitSpawnCount);
         }
 
         private void Awake()
         {
-            produceUnitCommonStates = new ProduceUnitCommonStates(carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
+            produceUnitCommonStates = new ProduceUnitCommonStates(resourceRequestForProduceUnitSpawn, carryingResourceCapacity, onceExtractionCapacity, gatheringInterval);
         }
 
         public void InstantiateUnit(UnitType type, int unitCount)
         {
-            Debug.LogFormat("{0}体の生産ユニットを生成開始", unitCount);
             if(unitCount <= 0) return;
             while(unitCount > 0)
             {
@@ -58,17 +74,16 @@ namespace CivWar{
                 }
                 unitCount--;
             }
-            Debug.Log("生産ユニットを生成完了");
         }
 
-        public void AddResource(ResourceType resourceType, int resourceAmount)
+        public void AddResource(ResourcePacket resourcePacket)
         {
-            townStorage.AddResource(resourceType, resourceAmount);
+            townStorage.AddResource(resourcePacket);
         }
 
-        public void RemoveResource(ResourceType resourceType, int resourceAmount)
+        public void RemoveResource(ResourcePacket resourcePacket)
         {
-            townStorage.RemoveResource(resourceType, resourceAmount);
+            townStorage.RemoveResource(resourcePacket);
         }
     }
 }

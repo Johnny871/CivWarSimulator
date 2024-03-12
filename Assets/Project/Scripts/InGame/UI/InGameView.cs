@@ -1,4 +1,5 @@
 using System;
+using CivWar.Const;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -14,24 +15,36 @@ namespace CivWar{
 
         private void Awake()
         {
-            townHall.p_TownStorage.p_WoodAmount
-            .Subscribe(woodAmount => 
+            foreach(ResourcePacket resourcePacket in townHall.p_TownStorage.p_ResourcePackets)
             {
-                woodAmountText.text = String.Format("Wood : {0}", woodAmount);
-            })
-            .AddTo(this);
-            townHall.p_TownStorage.p_StoneAmount
-            .Subscribe(stoneAmount => 
-            {
-                stoneAmountText.text = String.Format("Stone : {0}", stoneAmount);
-            })
-            .AddTo(this);
-            townHall.p_TownStorage.p_WheatAmount
-            .Subscribe(wheatAmount => 
-            {
-                wheatAmountText.text = String.Format("Wheat : {0}", wheatAmount);
-            })
-            .AddTo(this);
+                switch(resourcePacket.Type)
+                {
+                    case ResourceType.Wood:
+                        resourcePacket.Amount
+                        .Subscribe(woodAmount => 
+                        {
+                            woodAmountText.text = String.Format("Wood : {0}", woodAmount);
+                        })
+                        .AddTo(this);
+                        break;
+                    case ResourceType.Stone:
+                        resourcePacket.Amount
+                        .Subscribe(stoneAmount => 
+                        {
+                            stoneAmountText.text = String.Format("Stone : {0}", stoneAmount);
+                        })
+                        .AddTo(this);
+                        break;
+                    case ResourceType.Wheat:
+                        resourcePacket.Amount
+                        .Subscribe(wheatAmount => 
+                        {
+                            wheatAmountText.text = String.Format("Wheat : {0}", wheatAmount);
+                        })
+                        .AddTo(this);
+                        break;
+                }
+            }
         }
     }
 }

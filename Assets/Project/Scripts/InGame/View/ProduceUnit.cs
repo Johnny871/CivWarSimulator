@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CivWar.Const;
 using UnityEngine.AI;
@@ -14,8 +13,7 @@ namespace CivWar{
         [SerializeField] private float searchDistance;
         private GameObject targetObj;
         private Resource targetResource;
-        private ResourceType currentCarryingResourceType = new ResourceType();
-        private int currentCarryingResourceAmount;
+        private ResourcePacket currentResourcePacket = new ResourcePacket(ResourceType.None, 0);
         private TownHall townHall;
         private TeamColor teamColor;
         private bool isMove = false;
@@ -61,7 +59,7 @@ namespace CivWar{
                     break;
                 case ProduceUnitState.Gathering:
                     agent.Stop(true);
-                    StartCoroutine(GatherResource(targetResource, townHall.p_produceUnitCommonStates.OnceExtractionCapacity));
+                    StartCoroutine(GatherResource(targetResource, townHall.p_produceUnitCommonStates.p_OnceExtractionCapacity));
                     break;
                 case ProduceUnitState.Carrying:
                     targetResource.SetIsWorked(false);
@@ -86,7 +84,7 @@ namespace CivWar{
             {
                 Resource resource = target.GetComponent<Resource>();
                 if(resource.DuaringWorked) continue;
-                if(targetResourceType != ResourceType.None && resource.p_ResourceType != targetResourceType) continue;
+                if(targetResourceType != ResourceType.None && resource.p_ResourcePacket.Type != targetResourceType) continue;
                 var targetDistance = Vector3.Distance(transform.position, target.transform.position);
                 if(!(targetDistance < minTargetDistance)) continue;
                 minTargetDistance = targetDistance;
@@ -122,16 +120,16 @@ namespace CivWar{
             //ターゲットが存在している間繰り返す
             while
             (
-                currentCarryingResourceAmount < townHall.p_produceUnitCommonStates.CarryingResourceCapacity &&
-                targetResource.ResourceAmount > 0 &&
+                currentResourcePacket.Amount.Value < townHall.p_produceUnitCommonStates.p_CarryingResourceCapacity &&
+                targetResource.p_ResourcePacket.Amount.Value > 0 &&
                 targetObj != null
             )
             {
-                yield return new WaitForSeconds(townHall.p_produceUnitCommonStates.GatheringInterval);
-                if(requireAmount > targetResource.ResourceAmount) requireAmount = targetResource.ResourceAmount;
+                yield return new WaitForSeconds(townHall.p_produceUnitCommonStates.p_GatheringInterval);
+                if(requireAmount > targetResource.p_ResourcePacket.Amount.Value) requireAmount = targetResource.p_ResourcePacket.Amount.Value;
                 targetResource.Remove(requireAmount);
-                currentCarryingResourceAmount += requireAmount;
-                currentCarryingResourceType = targetResource.p_ResourceType;
+                currentResourcePacket.Amount.Value += requireAmount;
+                currentResourcePacket.Add(new ResourcePacket(targetResource.p_ResourcePacket.Type, requireAmount));
             }
             state.Value = ProduceUnitState.Carrying;
         }
@@ -139,9 +137,8 @@ namespace CivWar{
         //所持資源収納関数[void型]
         private void StorageResource(Warehouse warehouse)
         {
-            warehouse.AddResource(currentCarryingResourceType, currentCarryingResourceAmount);
-            currentCarryingResourceAmount = 0;
-            currentCarryingResourceType = ResourceType.None;
+            warehouse.AddResource(currentResourcePacket);
+            currentResourcePacket = new ResourcePacket();
         }
 
         private IEnumerator WaitRandomSecond(float minSec, float maxSec)

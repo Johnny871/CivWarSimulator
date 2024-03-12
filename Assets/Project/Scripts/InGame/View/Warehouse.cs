@@ -13,9 +13,9 @@ namespace CivWar{
             this.teamColor = teamColor;
         }
 
-        public void AddResource(ResourceType resourceType, int resourceAmount)
+        public void AddResource(ResourcePacket resourcePacket)
         {
-            townHall.AddResource(resourceType, resourceAmount);
+            townHall.AddResource(resourcePacket);
         }
     }
 }

@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7481689833521531851}
   - component: {fileID: 6823138239896563643}
   - component: {fileID: 7462676652861796938}
+  - component: {fileID: 4325882430374267204}
   m_Layer: 0
   m_Name: TownHall
   m_TagString: Warehouse
@@ -94,11 +95,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   produceUnitPref: {fileID: 7111978294097493564, guid: a256b469b0654b84caacaf68efcbde36, type: 3}
   soldierUnitPref: {fileID: 0}
+  resourceRequestForProduceUnitSpawn:
+  - type: 0
+    amount:
+      value: 10
+  - type: 2
+    amount:
+      value: 5
+  resourceRequestForSoldierUnitSpawn:
+  - type: 1
+    amount:
+      value: 10
+  - type: 2
+    amount:
+      value: 5
   spawnPoint: {fileID: 396246485725011444}
   carryingResourceCapacity: 1
   onceExtractionCapacity: 1
   gatheringInterval: 3
-  InitProduceUnitSpawnCount: 3
+  initProduceUnitSpawnCount: 3
 --- !u!208 &7481689833521531851
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -157,6 +172,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2, z: 3}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4325882430374267204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523248961994633873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b285beb2e6bfa418cd0f17a6b0f74c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strategyBalance: 0
 --- !u!1 &3190312959598112895
 GameObject:
   m_ObjectHideFlags: 0
